@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:preferences_app/providers/theme_provider.dart';
 import 'package:preferences_app/share_preferences/preferences.dart';
 import 'package:preferences_app/widgets/side_menu.dart';
+import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   static const String routerName = 'Settings';
@@ -18,6 +20,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       drawer: const SideMenu(),
@@ -38,6 +42,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: const Text('Darkmode'),
                 onChanged: (value) {
                   Preferences.isDarkmode = value;
+
+                  value
+                      ? themeProvider.setDarkMode()
+                      : themeProvider.setLightMode();
+
                   setState(() {});
                 },
               ),
